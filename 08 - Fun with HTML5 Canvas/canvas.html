@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,body{
+            margin: 0;
+        }
+        canvas{
+            border: 1px solid #333;
+            width: 500px;
+            height: 500px;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            
+        }
+        section{
+            width: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        section ul{
+            margin: 0;
+            padding: 0;
+            padding-left: 40px;
+            list-style: none;
+        }
+        li button{
+            
+            border-radius: 3px;
+            background-color: #f1f1f1;
+        }
+        .crvena{
+            color:red;
+            border: 1px solid red;
+        }
+        .zelena{
+            color:green;
+            border: 1px solid green;
+        }
+        .plava{
+            color:blue;
+            border: 1px solid blue;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <h1>Crtaj</h1>
+        <ul>
+            <li>
+                <button class="crvena">Crvena</button>
+                <button class="zelena">Zelena</button>
+                <button class="plava">Plava</button>
+            </li>
+        </ul>
+    </section>
+    <canvas id="crtanje"></canvas>
+
+    <script>
+        const canvas = document.querySelector('#crtanje');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = 500;
+        canvas.height = 500;
+
+        ctx.lineJoin = 'round';
+        ctx.lineCap = 'round'
+        ctx.lineWidth = 5;
+  
+        let drawing = false;
+        let startX = 0;
+        let startY = 0;
+        let boja = 'black';
+
+        function draw(e){
+            if(!drawing) return;
+
+            ctx.strokeStyle = boja;
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+
+            console.log(`x=${e.offsetX}, y=${e.offsetY}`);
+            [startX, startY] = [e.offsetX, e.offsetY];
+            
+        }
+
+        canvas.addEventListener('mousedown', (e)=>{
+            [startX, startY] = [e.offsetX, e.offsetY];
+            drawing = true;
+        });
+        canvas.addEventListener('mouseup', ()=>{
+            drawing = false;
+        });
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseout', ()=>{
+            drawing = false;
+        });
+
+        document.querySelector('.crvena').addEventListener('click',()=>{
+            boja = 'red';
+        });
+        document.querySelector('.zelena').addEventListener('click',()=>{
+            boja = 'green';
+        });
+        document.querySelector('.plava').addEventListener('click',()=>{
+            boja = 'blue';
+        });
+
+    </script>
+</body>
+</html>
